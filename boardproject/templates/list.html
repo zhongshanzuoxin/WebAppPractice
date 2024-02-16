@@ -7,10 +7,12 @@
 {% endblock header %}
 
 {% block content %}
+{% for item in object_list %}
 <div class="alert alert-success" role="alert">
     <p>タイトル：</p>
     <p>投稿者：</p>
     <a class="btn btn-primary" href="#" role="button">Link</a>
     <a class="btn btn-primary" href="#" role="button">Link</a>
 </div>
+{% endfor %}
 {% endblock content %}
