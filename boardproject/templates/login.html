@@ -8,8 +8,8 @@
         <div class="col-md-6 offset-md-3">
             <div class="card mt-5">
                 <div class="card-body">
-                    <h2 class="card-title text-center">新規登録</h2>
-                    <div class="text-center text-danger">{{ error }}</div>
+                    <h2 class="card-title text-center">ログイン</h2>
+                    <div class="text-center text-danger">{{ context }}</div>
                     <form method="POST">{% csrf_token %}
                         <div class="mb-3">
                             <label for="inputEmail" class="form-label">お名前</label>
@@ -19,7 +19,7 @@
                             <label for="inputPassword" class="form-label">パスワード</label>
                             <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">登録する</button>
+                        <button type="submit" class="btn btn-primary w-100">ログイン</button>
                     </form>
                 </div>
             </div>
