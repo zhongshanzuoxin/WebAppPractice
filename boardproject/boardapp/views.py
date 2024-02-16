@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+
 from .models import BoardModel
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -24,11 +26,20 @@ def loginfunc(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return render(request, 'login.html', {'context': 'ログインしました'})
+            return redirect('list')
         else:
             return render(request, 'login.html', {'context': 'ログインに失敗しました'})
     return render(request, 'login.html', {})
 
+def logoutfunc(request):
+    logout(request)
+    return redirect('login')
+
+
 def listfunc(request):
     object_list = BoardModel.objects.all()
     return render(request, 'list.html', {'object_list': object_list})
+
+def detailfunc(request, pk):
+    object = get_object_or_404(BoardModel, pk=pk)
+    return render(request, 'detail.html', {'object': object})
