@@ -1,23 +1,35 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<div class="alert alert-primary" role="alert">
-    <h3>社内SNS</h3>
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="{% url 'list' %}">社内SNS</a>
+    <div class="d-flex">
+      {% if user.is_authenticated %}
+      <a class="btn btn-secondary" href="{% url 'logout' %}" role="button">ログアウト</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
 {% endblock header %}
 
 {% block content %}
 {% if user.is_authenticated %}
-{% for item in object_list %}
-<div class="alert alert-success" role="alert">
-    <p>タイトル：<a href="{% url 'detail' item.pk %}">{{ item.title }}</a></p>
-    <p>投稿者：{{ item.author }}</p>
-    <a class="btn btn-primary" href="#" role="button">Link</a>
-    <a class="btn btn-primary" href="#" role="button">Link</a>
+<div class="container mt-4">
+  {% for item in object_list %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">タイトル：<a href="{% url 'detail' item.pk %}">{{ item.title }}</a></h5>
+      <h6 class="card-subtitle mb-2 text-muted">投稿者：{{ item.author }}</h6>
+      <a class="btn btn-outline-primary disabled" href="{% url 'good' item.pk %}" role="button">いいね{{ item.good }}件</a>
+      <a class="btn btn-outline-secondary disabled" href="" role="button">既読{{ item.read }}人</a>
+    </div>
+  </div>
+  {% endfor %}
 </div>
-{% endfor %}
-<a class="btn btn-primary" href="{% url 'logout' %}" role="button">ログアウト</a>
 {% else %}
-<p>ログインしてください</p>
+<div class="alert alert-warning" role="alert">
+  ログインしてください
+</div>
 {% endif %}
 {% endblock content %}

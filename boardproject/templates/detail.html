@@ -1,22 +1,38 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<div class="alert alert-primary" role="alert">
-    <h3>詳細ページ</h3>
-</div>
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">詳細ページ</span>
+  </div>
+</nav>
 {% endblock header %}
 
 {% block content %}
 {% if user.is_authenticated %}
 
-<div class="alert alert-success" role="alert">
-    <p>タイトル：{{ object.title }}</p>
-    <p>投稿者：{{ object.author }}</p>
-    <p><img src="{{ object.sns_image.url }}" width="100" height="100"</p>
-    <a class="btn btn-primary" href="#" role="button">いいねする</a>
-    <a class="btn btn-primary" href="#" role="button">既読にする</a>
+<div class="container mt-4">
+<div class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ object.sns_image.url }}" class="img-fluid rounded-start" alt="投稿画像">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ object.title }}</h5>
+        <p class="card-text"><small class="text-muted">投稿者：{{ object.author }}</small></p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+          <a class="btn btn-primary me-md-2" href="{% url 'good' object.pk %}" role="button">いいね</a>
+          <a class="btn btn-outline-primary" href="{% url 'read' object.pk %}" role="button">既読</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 {% else %}
-<p>ログインしてください</p>
+<div class="alert alert-warning" role="alert">
+    ログインしてください
+</div>
 {% endif %}
 {% endblock content %}
