@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 
 from .models import BoardModel
 from django.contrib.auth.decorators import login_required
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -14,7 +16,7 @@ def signupfunc(request):
         password = request.POST['password']
         try:
             user = User.objects.create_user(username, '', password)
-            return render(request, 'signup.html', {})
+            return redirect('list')
         except IntegrityError:
             return render(request, 'signup.html', {'error':'このユーザーはすでに登録されています'})
     return render(request, 'signup.html', {})
@@ -46,6 +48,8 @@ def detailfunc(request, pk):
 
 def goodfunc(request, pk):
     object = BoardModel.objects.get(pk=pk)
+    if request.user.username == object.author:
+        return redirect('list')
     object.good = object.good + 1
     object.save()
     return redirect('list')
@@ -53,10 +57,16 @@ def goodfunc(request, pk):
 def readfunc(request, pk):
     object = get_object_or_404(BoardModel, pk=pk)
     username = request.user.get_username()
-    if username in object.readtext:
+    if username == object.author or username in object.readtext:
         return redirect('list')
     else:
         object.read = object.read + 1
         object.readtext = object.readtext + ' ' + username
         object.save()
         return redirect('list')
+
+class BoardCreate(CreateView):
+    template_name = 'create.html'
+    model = BoardModel
+    fields = ('title', 'content', 'author', 'sns_image')
+    success_url = reverse_lazy('list')

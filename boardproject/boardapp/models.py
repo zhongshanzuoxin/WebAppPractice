@@ -7,7 +7,6 @@ class BoardModel(models.Model):
     content = models.TextField()
     author = models.CharField(max_length=100)
     sns_image = models.ImageField(upload_to='')
-    good = models.IntegerField()
-    read = models.IntegerField()
-    readtext = models.TextField()
-    
+    good = models.IntegerField(null=True, blank=True, default=0) 
+    read = models.IntegerField(null=True, blank=True, default=0) 
+    readtext = models.TextField(null=True, blank=True, default="")  
